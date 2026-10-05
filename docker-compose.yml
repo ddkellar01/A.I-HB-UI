@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  ai-ui:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: ai-ui-repo:latest
+    container_name: matrix_ai_ui
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
