@@ -8,7 +8,6 @@ export function MatrixHeartbeat() {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
@@ -20,7 +19,6 @@ export function MatrixHeartbeat() {
     };
     handleResize();
 
-    // Matrix Rain Setup
     const characters = '01';
     const fontSize = 16;
     let columns = Math.floor(canvas.width / fontSize);
@@ -29,7 +27,6 @@ export function MatrixHeartbeat() {
       () => Math.random() * (canvas.height / fontSize)
     );
 
-    // Heartbeat (ECG) Setup
     const heartbeatPattern = [
       [0, 0], [30, 0], [40, -15], [50, 0], [70, 0],
       [85, 30], [110, -220], [130, 50], [145, 0],
@@ -59,7 +56,6 @@ export function MatrixHeartbeat() {
 
       ctx.save();
       ctx.beginPath();
-
       let currentX = 0;
       ctx.moveTo(0, centerY);
 
@@ -83,11 +79,12 @@ export function MatrixHeartbeat() {
       ctx.lineWidth = 2;
       ctx.shadowBlur = 10;
       ctx.stroke();
-
       ctx.restore();
     };
 
     const animate = () => {
+      // Clear rect allows the CSS grid behind the canvas to remain visible
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
       drawMatrixRain();
       drawHeartbeat();
       animationFrameId = requestAnimationFrame(animate);
@@ -113,9 +110,17 @@ export function MatrixHeartbeat() {
   }, []);
 
   return (
-    <canvas
-      ref={canvasRef}
+    <div 
       className="fixed inset-0 -z-10 h-full w-full pointer-events-none bg-black"
-    />
+      style={{
+        backgroundImage: `
+          linear-gradient(rgba(0, 150, 0, 0.2) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(0, 150, 0, 0.2) 1px, transparent 1px)
+        `,
+        backgroundSize: '40px 40px'
+      }}
+    >
+      <canvas ref={canvasRef} className="h-full w-full block" />
+    </div>
   );
 }
