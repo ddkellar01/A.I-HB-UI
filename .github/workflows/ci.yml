@@ -30,5 +30,4 @@ jobs:
       - name: Build Next.js project
         run: npm run build
         env:
-          # Dummy key to allow build-time static checks if needed
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY || 'dummy_key_for_build' }}
